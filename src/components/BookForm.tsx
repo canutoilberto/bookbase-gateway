@@ -80,6 +80,18 @@ const BookForm: React.FC = () => {
     try {
       const bookData: BookFormData = {
         ...values,
+        // Ensuring all required fields are provided
+        title: values.title,
+        authors: values.authors,
+        publisher: values.publisher,
+        edition: values.edition,
+        year: values.year,
+        location: values.location,
+        isbn: values.isbn,
+        language: values.language,
+        category: values.category,
+        subjects: values.subjects,
+        review: values.review || "", // Providing an empty string as fallback
       };
       addBook(bookData);
       form.reset();
