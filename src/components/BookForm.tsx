@@ -28,25 +28,25 @@ import { PlusCircle, X, Save, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  authors: z.array(z.string().min(1, "Author name is required")),
-  publisher: z.string().min(1, "Publisher is required"),
-  edition: z.string().min(1, "Edition is required"),
-  year: z.string().regex(/^\d{4}$/, "Year must be a 4-digit number"),
-  location: z.string().min(1, "Location is required"),
+  title: z.string().min(1, "Título é obrigatório"),
+  authors: z.array(z.string().min(1, "Nome do autor é obrigatório")),
+  publisher: z.string().min(1, "Editora é obrigatória"),
+  edition: z.string().min(1, "Edição é obrigatória"),
+  year: z.string().regex(/^\d{4}$/, "Ano deve ser um número de 4 dígitos"),
+  location: z.string().min(1, "Localização é obrigatória"),
   isbn: z
     .string()
     .regex(
       /^(?:ISBN(?:-1[03])?:?\ )?((?=\d{1,5}([ -]?)\d{1,7}\2?\d{1,6}\2?\d)(?:\d\2*){9}[\dX])$/i,
-      "Invalid ISBN format"
+      "Formato de ISBN inválido"
     ),
   language: z.nativeEnum(BookLanguage, {
-    errorMap: () => ({ message: "Please select a language" }),
+    errorMap: () => ({ message: "Por favor selecione um idioma" }),
   }),
   category: z.nativeEnum(BookCategory, {
-    errorMap: () => ({ message: "Please select a category" }),
+    errorMap: () => ({ message: "Por favor selecione uma categoria" }),
   }),
-  subjects: z.array(z.string().min(1, "Subject is required")),
+  subjects: z.array(z.string().min(1, "Assunto é obrigatório")),
   review: z.string().optional(),
 });
 
@@ -84,7 +84,7 @@ const BookForm: React.FC = () => {
       addBook(bookData);
       form.reset();
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Erro ao enviar formulário:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -127,7 +127,7 @@ const BookForm: React.FC = () => {
       <CardHeader className="space-y-1 bg-airbnb-light border-b p-6">
         <CardTitle className="text-2xl font-display flex items-center gap-2">
           <BookOpen className="w-6 h-6 text-airbnb-red" />
-          Add New Book
+          Adicionar Novo Livro
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
@@ -138,12 +138,12 @@ const BookForm: React.FC = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Título</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       className="input-transition"
-                      placeholder="Enter book title"
+                      placeholder="Digite o título do livro"
                     />
                   </FormControl>
                   <FormMessage />
@@ -152,12 +152,12 @@ const BookForm: React.FC = () => {
             />
 
             <div className="space-y-2">
-              <FormLabel>Authors</FormLabel>
+              <FormLabel>Autores</FormLabel>
               <div className="flex gap-2">
                 <Input
                   value={authorInput}
                   onChange={(e) => setAuthorInput(e.target.value)}
-                  placeholder="Enter author name"
+                  placeholder="Digite o nome do autor"
                   className="input-transition"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
@@ -200,7 +200,7 @@ const BookForm: React.FC = () => {
                 name="publisher"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Publisher</FormLabel>
+                    <FormLabel>Editora</FormLabel>
                     <FormControl>
                       <Input {...field} className="input-transition" />
                     </FormControl>
@@ -214,7 +214,7 @@ const BookForm: React.FC = () => {
                 name="edition"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Edition</FormLabel>
+                    <FormLabel>Edição</FormLabel>
                     <FormControl>
                       <Input {...field} className="input-transition" />
                     </FormControl>
@@ -228,7 +228,7 @@ const BookForm: React.FC = () => {
                 name="year"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Year</FormLabel>
+                    <FormLabel>Ano</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -246,7 +246,7 @@ const BookForm: React.FC = () => {
                 name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Location</FormLabel>
+                    <FormLabel>Localização</FormLabel>
                     <FormControl>
                       <Input {...field} className="input-transition" />
                     </FormControl>
@@ -276,14 +276,14 @@ const BookForm: React.FC = () => {
                 name="language"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Language</FormLabel>
+                    <FormLabel>Idioma</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select language" />
+                          <SelectValue placeholder="Selecione o idioma" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -304,14 +304,14 @@ const BookForm: React.FC = () => {
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>Categoria</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
+                          <SelectValue placeholder="Selecione a categoria" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -329,12 +329,12 @@ const BookForm: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <FormLabel>Subjects</FormLabel>
+              <FormLabel>Assuntos</FormLabel>
               <div className="flex gap-2">
                 <Input
                   value={subjectInput}
                   onChange={(e) => setSubjectInput(e.target.value)}
-                  placeholder="Enter subject"
+                  placeholder="Digite o assunto"
                   className="input-transition"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
@@ -376,12 +376,12 @@ const BookForm: React.FC = () => {
               name="review"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Review</FormLabel>
+                  <FormLabel>Resenha</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       className="min-h-[100px] input-transition"
-                      placeholder="Write a review or notes about the book..."
+                      placeholder="Escreva uma resenha ou notas sobre o livro..."
                     />
                   </FormControl>
                   <FormMessage />
@@ -398,11 +398,11 @@ const BookForm: React.FC = () => {
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                "Adding Book..."
+                "Adicionando Livro..."
               ) : (
                 <>
                   <Save className="w-4 h-4 mr-2" />
-                  Save Book
+                  Salvar Livro
                 </>
               )}
             </Button>

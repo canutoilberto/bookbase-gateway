@@ -1,39 +1,40 @@
 
+
 export enum BookLanguage {
   PORTUGUESE = "Português",
-  ENGLISH = "English",
-  SPANISH = "Español",
-  FRENCH = "Français",
-  GERMAN = "Deutsch",
+  ENGLISH = "Inglês",
+  SPANISH = "Espanhol",
+  FRENCH = "Francês",
+  GERMAN = "Alemão",
   ITALIAN = "Italiano",
-  JAPANESE = "日本語",
-  CHINESE = "中文",
-  RUSSIAN = "Русский",
-  ARABIC = "العربية",
-  OTHER = "Other",
+  JAPANESE = "Japonês",
+  CHINESE = "Chinês",
+  RUSSIAN = "Russo",
+  ARABIC = "Árabe",
+  OTHER = "Outro",
 }
 
 export enum BookCategory {
-  FICTION = "Fiction",
-  NON_FICTION = "Non-Fiction",
-  SCIENCE = "Science",
-  TECHNOLOGY = "Technology",
-  HISTORY = "History",
-  PHILOSOPHY = "Philosophy",
-  ARTS = "Arts",
-  BIOGRAPHY = "Biography",
-  BUSINESS = "Business",
-  COOKING = "Cooking",
-  HEALTH = "Health",
-  TRAVEL = "Travel",
-  RELIGION = "Religion",
-  SELF_HELP = "Self-Help",
-  REFERENCE = "Reference",
-  COMICS = "Comics & Graphic Novels",
-  CHILDREN = "Children's Books",
-  EDUCATION = "Education & Teaching",
-  SPORTS = "Sports & Outdoors",
-  OTHER = "Other",
+  FICTION = "Ficção",
+  NON_FICTION = "Não-Ficção",
+  SCIENCE = "Ciência",
+  TECHNOLOGY = "Tecnologia",
+  HISTORY = "História",
+  PHILOSOPHY = "Filosofia",
+  ARTS = "Artes",
+  BIOGRAPHY = "Biografia",
+  BUSINESS = "Negócios",
+  COOKING = "Culinária",
+  HEALTH = "Saúde",
+  TRAVEL = "Viagens",
+  RELIGION = "Religião",
+  SELF_HELP = "Autoajuda",
+  REFERENCE = "Referência",
+  COMICS = "Quadrinhos & Novels Gráficas",
+  CHILDREN = "Livros Infantis",
+  EDUCATION = "Educação & Ensino",
+  SPORTS = "Esportes & Atividades ao Ar Livre",
+  OTHER = "Outro",
 }
 
 export interface Book {
@@ -57,3 +58,4 @@ export interface Book {
 export type BookFormData = Omit<Book, "id" | "catalogCode" | "createdAt" | "updatedAt">;
 
 export type BookSearchCriteria = "catalogCode" | "title" | "subjects" | "language";
+

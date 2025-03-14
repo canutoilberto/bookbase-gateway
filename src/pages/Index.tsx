@@ -14,7 +14,7 @@ const Index = () => {
           <div className="container mx-auto px-4 py-6">
             <h1 className="text-3xl font-display text-airbnb-navy flex items-center gap-2">
               <BookOpen className="w-8 h-8 text-airbnb-red" />
-              Book Management System
+              Sistema de Gerenciamento de Livros
             </h1>
           </div>
         </header>
@@ -24,11 +24,11 @@ const Index = () => {
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
               <TabsTrigger value="catalog" className="data-[state=active]:bg-airbnb-red data-[state=active]:text-white">
                 <BookOpen className="w-4 h-4 mr-2" />
-                Add Book
+                Adicionar Livro
               </TabsTrigger>
               <TabsTrigger value="list" className="data-[state=active]:bg-airbnb-red data-[state=active]:text-white">
                 <ListFilter className="w-4 h-4 mr-2" />
-                Book List
+                Lista de Livros
               </TabsTrigger>
             </TabsList>
 

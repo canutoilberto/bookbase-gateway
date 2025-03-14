@@ -23,7 +23,7 @@ const BookContext = createContext<BookContextType | undefined>(undefined);
 export const useBooks = (): BookContextType => {
   const context = useContext(BookContext);
   if (!context) {
-    throw new Error("useBooks must be used within a BookProvider");
+    throw new Error("useBooks deve ser usado dentro de um BookProvider");
   }
   return context;
 };
@@ -36,14 +36,14 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { toast } = useToast();
 
-  // Load initial data from localStorage (in a real app, this would be Firebase)
+  // Carrega dados iniciais do localStorage (em um aplicativo real, isso seria o Firebase)
   useEffect(() => {
     const loadBooks = () => {
       try {
         const savedBooks = localStorage.getItem("books");
         if (savedBooks) {
           const parsedBooks: Book[] = JSON.parse(savedBooks);
-          // Convert string dates back to Date objects
+          // Converte strings de datas de volta para objetos Date
           const booksWithDates = parsedBooks.map(book => ({
             ...book,
             createdAt: new Date(book.createdAt),
@@ -53,10 +53,10 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setFilteredBooks(booksWithDates);
         }
       } catch (error) {
-        console.error("Failed to load books from localStorage:", error);
+        console.error("Falha ao carregar livros do localStorage:", error);
         toast({
-          title: "Error loading books",
-          description: "There was a problem loading your book data.",
+          title: "Erro ao carregar livros",
+          description: "Houve um problema ao carregar seus dados de livros.",
           variant: "destructive",
         });
       } finally {
@@ -67,14 +67,14 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loadBooks();
   }, [toast]);
 
-  // Save books to localStorage whenever the collection changes
+  // Salva livros no localStorage sempre que a coleção muda
   useEffect(() => {
     if (!isLoading) {
       localStorage.setItem("books", JSON.stringify(books));
     }
   }, [books, isLoading]);
 
-  // Update filtered books whenever search params or books change
+  // Atualiza livros filtrados sempre que os parâmetros de pesquisa ou livros mudam
   useEffect(() => {
     setFilteredBooks(searchBooks(books, searchCriteria, searchQuery));
   }, [books, searchCriteria, searchQuery]);
@@ -83,8 +83,8 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const newBook = createBookFromFormData(bookData, books);
     setBooks(prevBooks => [...prevBooks, newBook]);
     toast({
-      title: "Book added",
-      description: `"${bookData.title}" has been added to your collection.`,
+      title: "Livro adicionado",
+      description: `"${bookData.title}" foi adicionado à sua coleção.`,
     });
   };
 
@@ -93,8 +93,8 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
     if (bookToDelete) {
       toast({
-        title: "Book removed",
-        description: `"${bookToDelete.title}" has been removed from your collection.`,
+        title: "Livro removido",
+        description: `"${bookToDelete.title}" foi removido da sua coleção.`,
       });
     }
   };
@@ -112,8 +112,8 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       )
     );
     toast({
-      title: "Book updated",
-      description: `"${bookData.title}" has been updated.`,
+      title: "Livro atualizado",
+      description: `"${bookData.title}" foi atualizado.`,
     });
   };
 

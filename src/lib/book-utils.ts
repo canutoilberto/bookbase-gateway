@@ -2,14 +2,14 @@
 import { Book, BookFormData } from "@/types/book";
 
 /**
- * Generates a unique catalog code for a new book
- * Format: BK-YYYY-XXXXX where YYYY is the current year and XXXXX is a sequential number
+ * Gera um código único de catalogação para um novo livro
+ * Formato: BK-YYYY-XXXXX onde YYYY é o ano atual e XXXXX é um número sequencial
  */
 export const generateCatalogCode = (existingBooks: Book[]): string => {
   const currentYear = new Date().getFullYear();
   const yearPrefix = `BK-${currentYear}-`;
   
-  // Find the highest sequential number for this year
+  // Encontra o maior número sequencial para este ano
   const yearBooks = existingBooks.filter(book => 
     book.catalogCode.startsWith(yearPrefix)
   );
@@ -24,14 +24,14 @@ export const generateCatalogCode = (existingBooks: Book[]): string => {
     }
   });
   
-  // Format the new sequential number with leading zeros
+  // Formata o novo número sequencial com zeros à esquerda
   const nextSequential = (maxSequentialNumber + 1).toString().padStart(5, '0');
   
   return `${yearPrefix}${nextSequential}`;
 };
 
 /**
- * Creates a book object from form data
+ * Cria um objeto livro a partir dos dados do formulário
  */
 export const createBookFromFormData = (
   formData: BookFormData, 
@@ -49,29 +49,29 @@ export const createBookFromFormData = (
 };
 
 /**
- * Formats authors array for display
+ * Formata o array de autores para exibição
  */
 export const formatAuthors = (authors: string[]): string => {
-  if (!authors || authors.length === 0) return "Unknown";
+  if (!authors || authors.length === 0) return "Desconhecido";
   
   if (authors.length === 1) return authors[0];
   
-  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+  if (authors.length === 2) return `${authors[0]} e ${authors[1]}`;
   
-  return authors.slice(0, -1).join(", ") + ", and " + authors[authors.length - 1];
+  return authors.slice(0, -1).join(", ") + " e " + authors[authors.length - 1];
 };
 
 /**
- * Formats subjects array for display
+ * Formata o array de assuntos para exibição
  */
 export const formatSubjects = (subjects: string[]): string => {
-  if (!subjects || subjects.length === 0) return "None";
+  if (!subjects || subjects.length === 0) return "Nenhum";
   
   return subjects.join(", ");
 };
 
 /**
- * Search books based on search criteria and query
+ * Pesquisa livros com base nos critérios de busca e consulta
  */
 export const searchBooks = (
   books: Book[],
