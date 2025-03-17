@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Table,
@@ -18,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { formatAuthors, formatSubjects } from "@/lib/book-utils";
 import { useBooks } from "@/contexts/BookContext";
-import { Book, BookSearchCriteria } from "@/types/book";
+import { BookSearchCriteria } from "@/types/book";
 import { Search } from "lucide-react";
 
 const BookTable: React.FC = () => {
@@ -38,7 +37,9 @@ const BookTable: React.FC = () => {
   if (isLoading) {
     return (
       <div className="w-full h-64 flex items-center justify-center">
-        <div className="animate-pulse text-airbnb-gray">Carregando livros...</div>
+        <div className="animate-pulse text-airbnb-gray">
+          Carregando livros...
+        </div>
       </div>
     );
   }
@@ -55,12 +56,15 @@ const BookTable: React.FC = () => {
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-airbnb-gray w-4 h-4" />
         </div>
-        <Select value={searchCriteria} onValueChange={handleSearchCriteriaChange}>
+        <Select
+          value={searchCriteria}
+          onValueChange={handleSearchCriteriaChange}
+        >
           <SelectTrigger className="w-full sm:w-[200px]">
             <SelectValue placeholder="Pesquisar por..." />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="catalogCode">Código do Catálogo</SelectItem>
+            <SelectItem value="catalogCode">Cód do Catálogo</SelectItem>
             <SelectItem value="title">Título</SelectItem>
             <SelectItem value="subjects">Assunto</SelectItem>
             <SelectItem value="language">Idioma</SelectItem>
@@ -72,7 +76,7 @@ const BookTable: React.FC = () => {
         <Table>
           <TableHeader className="bg-airbnb-light">
             <TableRow>
-              <TableHead className="w-[100px]">Código do Catálogo</TableHead>
+              <TableHead className="w-[100px]">Cód</TableHead>
               <TableHead>Título</TableHead>
               <TableHead>Autores</TableHead>
               <TableHead>Editora</TableHead>
@@ -84,7 +88,10 @@ const BookTable: React.FC = () => {
           <TableBody>
             {filteredBooks.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-airbnb-gray">
+                <TableCell
+                  colSpan={7}
+                  className="text-center py-8 text-airbnb-gray"
+                >
                   Nenhum livro encontrado
                 </TableCell>
               </TableRow>

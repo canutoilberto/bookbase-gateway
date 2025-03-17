@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,7 +36,7 @@ const formSchema = z.object({
   isbn: z
     .string()
     .regex(
-      /^(?:ISBN(?:-1[03])?:?\ )?((?=\d{1,5}([ -]?)\d{1,7}\2?\d{1,6}\2?\d)(?:\d\2*){9}[\dX])$/i,
+      /^(?:ISBN(?:-1[03])?:? )?((?=\d{1,5}([ -]?)\d{1,7}\2?\d{1,6}\2?\d)(?:\d\2*){9}[\dX])$/i,
       "Formato de ISBN inválido"
     ),
   language: z.nativeEnum(BookLanguage, {
