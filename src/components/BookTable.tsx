@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Table,
@@ -43,7 +42,7 @@ const BookTable: React.FC = () => {
     isLoading,
     deleteBook,
   } = useBooks();
-  
+
   const [bookToDelete, setBookToDelete] = useState<string | null>(null);
   const [bookToEdit, setBookToEdit] = useState<Book | null>(null);
 
@@ -102,7 +101,7 @@ const BookTable: React.FC = () => {
         <Table>
           <TableHeader className="bg-airbnb-light">
             <TableRow>
-              <TableHead className="w-[100px]">Cód</TableHead>
+              <TableHead className="w-[180px]">Cód</TableHead>
               <TableHead>Título</TableHead>
               <TableHead>Autores</TableHead>
               <TableHead>Ano</TableHead>
@@ -163,23 +162,27 @@ const BookTable: React.FC = () => {
       </div>
 
       {/* Edit Modal */}
-      <BookEditModal
-        book={bookToEdit}
-        onClose={() => setBookToEdit(null)}
-      />
+      <BookEditModal book={bookToEdit} onClose={() => setBookToEdit(null)} />
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!bookToDelete} onOpenChange={(open) => !open && setBookToDelete(null)}>
+      <AlertDialog
+        open={!!bookToDelete}
+        onOpenChange={(open) => !open && setBookToDelete(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. O livro será permanentemente removido da sua coleção.
+              Esta ação não pode ser desfeita. O livro será permanentemente
+              removido da sua coleção.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
