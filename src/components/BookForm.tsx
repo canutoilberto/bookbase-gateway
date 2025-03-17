@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookCategory, BookFormData } from "@/types/book";
+import { BookCategory, BookFormData, BookLanguage } from "@/types/book";
 import { useBooks } from "@/contexts/BookContext";
 import { BookOpen, Save } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -57,7 +57,7 @@ const BookForm: React.FC = () => {
         year: values.year,
         location: "", // Campo simplificado
         isbn: values.isbn,
-        language: "Português", // Valor padrão para campo simplificado
+        language: BookLanguage.PORTUGUESE, // Usando o enum correto agora
         category: values.category,
         subjects: [], // Campo simplificado
         review: values.review || "",
