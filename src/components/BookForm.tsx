@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,6 +18,14 @@ const formSchema = z.object({
   authors: z.array(z.string().min(1, "Nome do autor é obrigatório")),
   year: z.string().regex(/^\d{4}$/, "Ano deve ser um número de 4 dígitos"),
   isbn: z.string().regex(
+    // Regex simplificada para validar ISBN-10 e ISBN-13
+    // Aceita formatos com ou sem hífens/espaços
+    // ISBN-10: 10 dígitos (último pode ser X)
+    // ISBN-13: 13 dígitos
+    // Exemplos válidos:
+    // - 978-0-13-149505-0
+    // - 9780131495050
+    // - 0-13-149505-X
     /^(?:ISBN(?:-1[03])?:? )?(\d{9}[\dX]|\d{13})$/i,
     "Formato de ISBN inválido"
   ),
@@ -103,10 +110,7 @@ const BookForm: React.FC = () => {
               watch={form.watch}
             />
 
-            <BookDetailsInfo
-              control={form.control}
-              simplified={true}
-            />
+            <BookDetailsInfo control={form.control} simplified={true} />
 
             <Button
               type="submit"

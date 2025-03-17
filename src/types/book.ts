@@ -1,4 +1,3 @@
-
 export enum BookLanguage {
   PORTUGUESE = "Português",
   ENGLISH = "Inglês",
@@ -14,6 +13,7 @@ export enum BookLanguage {
 }
 
 export enum BookCategory {
+  BRAZILIAN_FICTION = "Literatura Brasileira",
   FICTION = "Ficção",
   NON_FICTION = "Não-Ficção",
   SCIENCE = "Ciência",
@@ -54,6 +54,9 @@ export interface Book {
   updatedAt: Date;
 }
 
-export type BookFormData = Omit<Book, "id" | "catalogCode" | "createdAt" | "updatedAt">;
+export type BookFormData = Omit<
+  Book,
+  "id" | "catalogCode" | "createdAt" | "updatedAt"
+>;
 
 export type BookSearchCriteria = "catalogCode" | "title";
