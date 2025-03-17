@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -5,41 +6,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookLanguage, BookCategory, BookFormData } from "@/types/book";
+import { BookCategory, BookFormData } from "@/types/book";
 import { useBooks } from "@/contexts/BookContext";
 import { BookOpen, Save } from "lucide-react";
 import { cn } from "@/lib/utils";
 import BookBasicInfo from "./form/BookBasicInfo";
-import BookPublishingInfo from "./form/BookPublishingInfo";
 import BookDetailsInfo from "./form/BookDetailsInfo";
 
-// Schema de validação
+// Schema de validação simplificado
 const formSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
   authors: z.array(z.string().min(1, "Nome do autor é obrigatório")),
-  publisher: z.string().min(1, "Editora é obrigatória"),
-  edition: z.string().min(1, "Edição é obrigatória"),
   year: z.string().regex(/^\d{4}$/, "Ano deve ser um número de 4 dígitos"),
-  location: z.string().min(1, "Localização é obrigatória"),
   isbn: z.string().regex(
-    // Regex simplificada para validar ISBN-10 e ISBN-13
-    // Aceita formatos com ou sem hífens/espaços
-    // ISBN-10: 10 dígitos (último pode ser X)
-    // ISBN-13: 13 dígitos
-    // Exemplos válidos:
-    // - 978-0-13-149505-0
-    // - 9780131495050
-    // - 0-13-149505-X
     /^(?:ISBN(?:-1[03])?:? )?(\d{9}[\dX]|\d{13})$/i,
     "Formato de ISBN inválido"
   ),
-  language: z.nativeEnum(BookLanguage, {
-    errorMap: () => ({ message: "Por favor selecione um idioma" }),
-  }),
   category: z.nativeEnum(BookCategory, {
     errorMap: () => ({ message: "Por favor selecione uma categoria" }),
   }),
-  subjects: z.array(z.string().min(1, "Assunto é obrigatório")),
   review: z.string().optional(),
 });
 
@@ -54,14 +39,9 @@ const BookForm: React.FC = () => {
     defaultValues: {
       title: "",
       authors: [],
-      publisher: "",
-      edition: "",
       year: new Date().getFullYear().toString(),
-      location: "",
       isbn: "",
-      language: BookLanguage.PORTUGUESE,
       category: BookCategory.OTHER,
-      subjects: [],
       review: "",
     },
   });
@@ -72,14 +52,14 @@ const BookForm: React.FC = () => {
       const bookData: BookFormData = {
         title: values.title,
         authors: values.authors,
-        publisher: values.publisher,
-        edition: values.edition,
+        publisher: "", // Campo simplificado
+        edition: "", // Campo simplificado
         year: values.year,
-        location: values.location,
+        location: "", // Campo simplificado
         isbn: values.isbn,
-        language: values.language,
+        language: "Português", // Valor padrão para campo simplificado
         category: values.category,
-        subjects: values.subjects,
+        subjects: [], // Campo simplificado
         review: values.review || "",
       };
       addBook(bookData);
@@ -104,19 +84,6 @@ const BookForm: React.FC = () => {
     );
   };
 
-  const addSubject = (subject: string) => {
-    const currentSubjects = form.getValues("subjects");
-    form.setValue("subjects", [...currentSubjects, subject]);
-  };
-
-  const removeSubject = (index: number) => {
-    const currentSubjects = form.getValues("subjects");
-    form.setValue(
-      "subjects",
-      currentSubjects.filter((_, i) => i !== index)
-    );
-  };
-
   return (
     <Card className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden book-form-transition">
       <CardHeader className="space-y-1 bg-airbnb-light border-b p-6">
@@ -136,14 +103,9 @@ const BookForm: React.FC = () => {
               watch={form.watch}
             />
 
-            <BookPublishingInfo control={form.control} />
-
             <BookDetailsInfo
               control={form.control}
-              subjects={form.getValues("subjects")}
-              addSubject={addSubject}
-              removeSubject={removeSubject}
-              watch={form.watch}
+              simplified={true}
             />
 
             <Button

@@ -1,5 +1,4 @@
 
-
 export enum BookLanguage {
   PORTUGUESE = "Português",
   ENGLISH = "Inglês",
@@ -57,5 +56,4 @@ export interface Book {
 
 export type BookFormData = Omit<Book, "id" | "catalogCode" | "createdAt" | "updatedAt">;
 
-export type BookSearchCriteria = "catalogCode" | "title" | "subjects" | "language";
-
+export type BookSearchCriteria = "catalogCode" | "title";

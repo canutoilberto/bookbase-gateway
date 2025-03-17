@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { formatAuthors, formatSubjects } from "@/lib/book-utils";
+import { formatAuthors } from "@/lib/book-utils";
 import { useBooks } from "@/contexts/BookContext";
 import { BookSearchCriteria } from "@/types/book";
 import { Search, Pencil, Trash2 } from "lucide-react";
@@ -94,8 +94,6 @@ const BookTable: React.FC = () => {
           <SelectContent>
             <SelectItem value="catalogCode">Cód do Catálogo</SelectItem>
             <SelectItem value="title">Título</SelectItem>
-            <SelectItem value="subjects">Assunto</SelectItem>
-            <SelectItem value="language">Idioma</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -107,10 +105,8 @@ const BookTable: React.FC = () => {
               <TableHead className="w-[100px]">Cód</TableHead>
               <TableHead>Título</TableHead>
               <TableHead>Autores</TableHead>
-              <TableHead>Editora</TableHead>
-              <TableHead>Idioma</TableHead>
+              <TableHead>Ano</TableHead>
               <TableHead>Categoria</TableHead>
-              <TableHead>Assuntos</TableHead>
               <TableHead className="w-[80px] text-center">Ações</TableHead>
             </TableRow>
           </TableHeader>
@@ -118,7 +114,7 @@ const BookTable: React.FC = () => {
             {filteredBooks.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={8}
+                  colSpan={6}
                   className="text-center py-8 text-airbnb-gray"
                 >
                   Nenhum livro encontrado
@@ -135,12 +131,8 @@ const BookTable: React.FC = () => {
                   </TableCell>
                   <TableCell className="font-medium">{book.title}</TableCell>
                   <TableCell>{formatAuthors(book.authors)}</TableCell>
-                  <TableCell>{book.publisher}</TableCell>
-                  <TableCell>{book.language}</TableCell>
+                  <TableCell>{book.year}</TableCell>
                   <TableCell>{book.category}</TableCell>
-                  <TableCell className="max-w-[200px] truncate">
-                    {formatSubjects(book.subjects)}
-                  </TableCell>
                   <TableCell>
                     <div className="flex justify-center space-x-2">
                       <Button
