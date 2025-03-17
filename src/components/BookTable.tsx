@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -15,10 +16,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { formatAuthors, formatSubjects } from "@/lib/book-utils";
 import { useBooks } from "@/contexts/BookContext";
 import { BookSearchCriteria } from "@/types/book";
-import { Search } from "lucide-react";
+import { Search, Pencil, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useNavigate } from "react-router-dom";
 
 const BookTable: React.FC = () => {
   const {
@@ -28,10 +41,25 @@ const BookTable: React.FC = () => {
     searchQuery,
     setSearchQuery,
     isLoading,
+    deleteBook,
   } = useBooks();
+  
+  const [bookToDelete, setBookToDelete] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSearchCriteriaChange = (value: string) => {
     setSearchCriteria(value as BookSearchCriteria);
+  };
+
+  const handleEditBook = (id: string) => {
+    navigate(`/edit/${id}`);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (bookToDelete) {
+      await deleteBook(bookToDelete);
+      setBookToDelete(null);
+    }
   };
 
   if (isLoading) {
@@ -83,13 +111,14 @@ const BookTable: React.FC = () => {
               <TableHead>Idioma</TableHead>
               <TableHead>Categoria</TableHead>
               <TableHead>Assuntos</TableHead>
+              <TableHead className="w-[80px] text-center">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredBooks.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={8}
                   className="text-center py-8 text-airbnb-gray"
                 >
                   Nenhum livro encontrado
@@ -112,12 +141,51 @@ const BookTable: React.FC = () => {
                   <TableCell className="max-w-[200px] truncate">
                     {formatSubjects(book.subjects)}
                   </TableCell>
+                  <TableCell>
+                    <div className="flex justify-center space-x-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEditBook(book.id)}
+                        title="Editar livro"
+                        className="h-8 w-8 text-airbnb-navy hover:text-airbnb-red hover:bg-airbnb-light"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setBookToDelete(book.id)}
+                        title="Excluir livro"
+                        className="h-8 w-8 text-airbnb-navy hover:text-destructive hover:bg-airbnb-light"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
         </Table>
       </div>
+
+      <AlertDialog open={!!bookToDelete} onOpenChange={(open) => !open && setBookToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. O livro será permanentemente removido da sua coleção.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
