@@ -1,12 +1,9 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookLanguage, BookCategory, BookFormData } from "@/types/book";
 import { useBooks } from "@/contexts/BookContext";
@@ -24,12 +21,18 @@ const formSchema = z.object({
   edition: z.string().min(1, "Edição é obrigatória"),
   year: z.string().regex(/^\d{4}$/, "Ano deve ser um número de 4 dígitos"),
   location: z.string().min(1, "Localização é obrigatória"),
-  isbn: z
-    .string()
-    .regex(
-      /^(?:ISBN(?:-1[03])?:? )?((?=\d{1,5}([ -]?)\d{1,7}\2?\d{1,6}\2?\d)(?:\d\2*){9}[\dX])$/i,
-      "Formato de ISBN inválido"
-    ),
+  isbn: z.string().regex(
+    // Regex simplificada para validar ISBN-10 e ISBN-13
+    // Aceita formatos com ou sem hífens/espaços
+    // ISBN-10: 10 dígitos (último pode ser X)
+    // ISBN-13: 13 dígitos
+    // Exemplos válidos:
+    // - 978-0-13-149505-0
+    // - 9780131495050
+    // - 0-13-149505-X
+    /^(?:ISBN(?:-1[03])?:? )?(\d{9}[\dX]|\d{13})$/i,
+    "Formato de ISBN inválido"
+  ),
   language: z.nativeEnum(BookLanguage, {
     errorMap: () => ({ message: "Por favor selecione um idioma" }),
   }),
@@ -125,16 +128,16 @@ const BookForm: React.FC = () => {
       <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <BookBasicInfo 
+            <BookBasicInfo
               control={form.control}
               authors={form.getValues("authors")}
               addAuthor={addAuthor}
               removeAuthor={removeAuthor}
               watch={form.watch}
             />
-            
+
             <BookPublishingInfo control={form.control} />
-            
+
             <BookDetailsInfo
               control={form.control}
               subjects={form.getValues("subjects")}
