@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { formatAuthors } from "@/lib/book-utils";
 import { useBooks } from "@/contexts/BookContext";
-import { BookSearchCriteria } from "@/types/book";
+import { Book, BookSearchCriteria } from "@/types/book";
 import { Search, Pencil, Trash2 } from "lucide-react";
 import {
   AlertDialog,
@@ -31,7 +31,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useNavigate } from "react-router-dom";
+import BookEditModal from "./BookEditModal";
 
 const BookTable: React.FC = () => {
   const {
@@ -45,14 +45,14 @@ const BookTable: React.FC = () => {
   } = useBooks();
   
   const [bookToDelete, setBookToDelete] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const [bookToEdit, setBookToEdit] = useState<Book | null>(null);
 
   const handleSearchCriteriaChange = (value: string) => {
     setSearchCriteria(value as BookSearchCriteria);
   };
 
-  const handleEditBook = (id: string) => {
-    navigate(`/edit/${id}`);
+  const handleEditBook = (book: Book) => {
+    setBookToEdit(book);
   };
 
   const handleDeleteConfirm = async () => {
@@ -138,7 +138,7 @@ const BookTable: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleEditBook(book.id)}
+                        onClick={() => handleEditBook(book)}
                         title="Editar livro"
                         className="h-8 w-8 text-airbnb-navy hover:text-airbnb-red hover:bg-airbnb-light"
                       >
@@ -162,6 +162,13 @@ const BookTable: React.FC = () => {
         </Table>
       </div>
 
+      {/* Edit Modal */}
+      <BookEditModal
+        book={bookToEdit}
+        onClose={() => setBookToEdit(null)}
+      />
+
+      {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!bookToDelete} onOpenChange={(open) => !open && setBookToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
