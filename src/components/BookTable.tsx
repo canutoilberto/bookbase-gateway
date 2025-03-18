@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Table,
@@ -31,6 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import BookEditModal from "./BookEditModal";
+import { format } from "date-fns";
 
 const BookTable: React.FC = () => {
   const {
@@ -59,6 +61,11 @@ const BookTable: React.FC = () => {
       await deleteBook(bookToDelete);
       setBookToDelete(null);
     }
+  };
+
+  const formatAcquisitionDate = (date?: Date) => {
+    if (!date) return "-";
+    return format(date, "dd/MM/yyyy");
   };
 
   if (isLoading) {
@@ -105,6 +112,8 @@ const BookTable: React.FC = () => {
               <TableHead>Título</TableHead>
               <TableHead>Autores</TableHead>
               <TableHead>Ano</TableHead>
+              <TableHead>Edição</TableHead>
+              <TableHead>Aquisição</TableHead>
               <TableHead>Categoria</TableHead>
               <TableHead className="w-[80px] text-center">Ações</TableHead>
             </TableRow>
@@ -113,7 +122,7 @@ const BookTable: React.FC = () => {
             {filteredBooks.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={8}
                   className="text-center py-8 text-airbnb-gray"
                 >
                   Nenhum livro encontrado
@@ -131,6 +140,8 @@ const BookTable: React.FC = () => {
                   <TableCell className="font-medium">{book.title}</TableCell>
                   <TableCell>{formatAuthors(book.authors)}</TableCell>
                   <TableCell>{book.year}</TableCell>
+                  <TableCell>{book.edition || "-"}</TableCell>
+                  <TableCell>{formatAcquisitionDate(book.acquisitionDate)}</TableCell>
                   <TableCell>{book.category}</TableCell>
                   <TableCell>
                     <div className="flex justify-center space-x-2">

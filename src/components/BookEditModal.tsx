@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -27,9 +28,11 @@ const formSchema = z.object({
       /^(?:ISBN(?:-1[03])?:? )?(\d{9}[\dX]|\d{13})$/i,
       "Formato de ISBN inválido"
     ),
+  edition: z.string().optional(),
   category: z.nativeEnum(BookCategory, {
     errorMap: () => ({ message: "Por favor selecione uma categoria" }),
   }),
+  acquisitionDate: z.date().optional(),
   review: z.string().optional(),
 });
 
@@ -51,7 +54,9 @@ const BookEditModal: React.FC<BookEditModalProps> = ({ book, onClose }) => {
       authors: [],
       year: new Date().getFullYear().toString(),
       isbn: "",
+      edition: "",
       category: BookCategory.OTHER,
+      acquisitionDate: undefined,
       review: "",
     },
   });
@@ -64,7 +69,9 @@ const BookEditModal: React.FC<BookEditModalProps> = ({ book, onClose }) => {
         authors: book.authors,
         year: book.year,
         isbn: book.isbn,
+        edition: book.edition || "",
         category: book.category,
+        acquisitionDate: book.acquisitionDate,
         review: book.review || "",
       });
     }
@@ -79,13 +86,14 @@ const BookEditModal: React.FC<BookEditModalProps> = ({ book, onClose }) => {
         title: values.title,
         authors: values.authors,
         publisher: book.publisher,
-        edition: book.edition,
+        edition: values.edition || "",
         year: values.year,
         location: book.location,
         isbn: values.isbn,
         language: book.language,
         category: values.category,
         subjects: book.subjects,
+        acquisitionDate: values.acquisitionDate,
         review: values.review || "",
       };
 
@@ -131,7 +139,7 @@ const BookEditModal: React.FC<BookEditModalProps> = ({ book, onClose }) => {
               watch={form.watch}
             />
 
-            <BookDetailsInfo control={form.control} simplified={true} />
+            <BookDetailsInfo control={form.control} simplified={false} />
 
             <DialogFooter>
               <Button

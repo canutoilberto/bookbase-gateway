@@ -1,3 +1,4 @@
+
 export enum BookLanguage {
   PORTUGUESE = "Português",
   ENGLISH = "Inglês",
@@ -50,6 +51,7 @@ export interface Book {
   category: BookCategory;
   subjects: string[];
   review: string;
+  acquisitionDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

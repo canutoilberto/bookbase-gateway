@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,27 +12,22 @@ import { BookOpen, Save } from "lucide-react";
 import { cn } from "@/lib/utils";
 import BookBasicInfo from "./form/BookBasicInfo";
 import BookDetailsInfo from "./form/BookDetailsInfo";
+import { format } from "date-fns";
 
-// Schema de validação simplificado
+// Schema de validação
 const formSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
   authors: z.array(z.string().min(1, "Nome do autor é obrigatório")),
   year: z.string().regex(/^\d{4}$/, "Ano deve ser um número de 4 dígitos"),
   isbn: z.string().regex(
-    // Regex simplificada para validar ISBN-10 e ISBN-13
-    // Aceita formatos com ou sem hífens/espaços
-    // ISBN-10: 10 dígitos (último pode ser X)
-    // ISBN-13: 13 dígitos
-    // Exemplos válidos:
-    // - 978-0-13-149505-0
-    // - 9780131495050
-    // - 0-13-149505-X
     /^(?:ISBN(?:-1[03])?:? )?(\d{9}[\dX]|\d{13})$/i,
     "Formato de ISBN inválido"
   ),
   category: z.nativeEnum(BookCategory, {
     errorMap: () => ({ message: "Por favor selecione uma categoria" }),
   }),
+  edition: z.string().optional(),
+  acquisitionDate: z.date().optional(),
   review: z.string().optional(),
 });
 
@@ -48,7 +44,9 @@ const BookForm: React.FC = () => {
       authors: [],
       year: new Date().getFullYear().toString(),
       isbn: "",
+      edition: "",
       category: BookCategory.OTHER,
+      acquisitionDate: undefined,
       review: "",
     },
   });
@@ -60,13 +58,14 @@ const BookForm: React.FC = () => {
         title: values.title,
         authors: values.authors,
         publisher: "", // Campo simplificado
-        edition: "", // Campo simplificado
+        edition: values.edition || "",
         year: values.year,
         location: "", // Campo simplificado
         isbn: values.isbn,
-        language: BookLanguage.PORTUGUESE, // Usando o enum correto agora
+        language: BookLanguage.PORTUGUESE,
         category: values.category,
         subjects: [], // Campo simplificado
+        acquisitionDate: values.acquisitionDate,
         review: values.review || "",
       };
       addBook(bookData);
@@ -110,7 +109,10 @@ const BookForm: React.FC = () => {
               watch={form.watch}
             />
 
-            <BookDetailsInfo control={form.control} simplified={true} />
+            <BookDetailsInfo 
+              control={form.control} 
+              simplified={false}
+            />
 
             <Button
               type="submit"
