@@ -48,39 +48,59 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(true);
       try {
         const booksData = await fetchBooks();
-        setBooks(booksData);
-        setFilteredBooks(booksData);
+        // Check if we got data from Firebase
+        if (booksData && booksData.length > 0) {
+          setBooks(booksData);
+          setFilteredBooks(booksData);
+        } else {
+          // Try loading from localStorage as fallback
+          loadFromLocalStorage();
+        }
       } catch (error) {
         console.error("Falha ao carregar livros do Firebase:", error);
         toast({
           title: "Erro ao carregar livros",
-          description: "Houve um problema ao carregar seus dados de livros do Firebase.",
+          description: "Houve um problema ao carregar seus dados de livros do Firebase. Utilizando localStorage como fallback.",
           variant: "destructive",
         });
         
-        // Modo fallback - carrega do localStorage se Firebase falhar
-        try {
-          const savedBooks = localStorage.getItem("books");
-          if (savedBooks) {
-            const parsedBooks: Book[] = JSON.parse(savedBooks);
-            const booksWithDates = parsedBooks.map(book => ({
-              ...book,
-              createdAt: new Date(book.createdAt),
-              updatedAt: new Date(book.updatedAt)
-            }));
-            setBooks(booksWithDates);
-            setFilteredBooks(booksWithDates);
-          }
-        } catch (localError) {
-          console.error("Fallback para localStorage também falhou:", localError);
-        }
+        // Fallback to localStorage
+        loadFromLocalStorage();
       } finally {
         setIsLoading(false);
       }
     };
 
+    const loadFromLocalStorage = () => {
+      try {
+        const savedBooks = localStorage.getItem("books");
+        if (savedBooks) {
+          const parsedBooks: Book[] = JSON.parse(savedBooks);
+          const booksWithDates = parsedBooks.map(book => ({
+            ...book,
+            createdAt: new Date(book.createdAt),
+            updatedAt: new Date(book.updatedAt),
+            acquisitionDate: book.acquisitionDate ? new Date(book.acquisitionDate) : undefined
+          }));
+          setBooks(booksWithDates);
+          setFilteredBooks(booksWithDates);
+        }
+      } catch (localError) {
+        console.error("Fallback para localStorage também falhou:", localError);
+      }
+    };
+
     loadBooks();
   }, [toast]);
+
+  // Salva no localStorage quando books mudar (fallback)
+  useEffect(() => {
+    try {
+      localStorage.setItem("books", JSON.stringify(books));
+    } catch (error) {
+      console.error("Erro ao salvar livros no localStorage:", error);
+    }
+  }, [books]);
 
   // Atualiza livros filtrados sempre que os parâmetros de pesquisa ou livros mudam
   useEffect(() => {
