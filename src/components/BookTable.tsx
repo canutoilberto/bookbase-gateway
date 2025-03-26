@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import BookEditModal from "./BookEditModal";
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 
 const BookTable: React.FC = () => {
   const {
@@ -64,8 +64,13 @@ const BookTable: React.FC = () => {
   };
 
   const formatAcquisitionDate = (date?: Date) => {
-    if (!date) return "-";
-    return format(date, "dd/MM/yyyy");
+    if (!date || !isValid(date)) return "-";
+    try {
+      return format(date, "dd/MM/yyyy");
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "-";
+    }
   };
 
   if (isLoading) {
