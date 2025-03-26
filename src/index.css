@@ -1,21 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-@font-face {
-  font-family: 'Cereal';
-  src: url('https://a0.muscache.com/airbnb/static/airbnb-cereal-medium-9a1c9d9deeebe19c5c7c6b4a1661f2d3.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Cereal';
-  src: url('https://a0.muscache.com/airbnb/static/airbnb-cereal-bold-bdfb98485e7748ff8881ce0e17bebeb2.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
