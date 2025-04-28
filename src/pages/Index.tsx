@@ -1,5 +1,3 @@
-
-import React from "react";
 import { BookProvider } from "@/contexts/BookContext";
 import BookForm from "@/components/BookForm";
 import BookTable from "@/components/BookTable";
@@ -22,11 +20,17 @@ const Index = () => {
         <main className="container mx-auto px-4 py-8">
           <Tabs defaultValue="catalog" className="space-y-6">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-              <TabsTrigger value="catalog" className="data-[state=active]:bg-airbnb-red data-[state=active]:text-white">
+              <TabsTrigger
+                value="catalog"
+                className="data-[state=active]:bg-airbnb-red data-[state=active]:text-white"
+              >
                 <BookOpen className="w-4 h-4 mr-2" />
                 Adicionar Livro
               </TabsTrigger>
-              <TabsTrigger value="list" className="data-[state=active]:bg-airbnb-red data-[state=active]:text-white">
+              <TabsTrigger
+                value="list"
+                className="data-[state=active]:bg-airbnb-red data-[state=active]:text-white"
+              >
                 <ListFilter className="w-4 h-4 mr-2" />
                 Lista de Livros
               </TabsTrigger>
